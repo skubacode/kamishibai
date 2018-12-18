@@ -1,0 +1,15 @@
+"# kamishibai" 
+
+urls refs: http://blog.fourthwoods.com/2011/08/11/setting-up-mingw-for-directx/
+
+g++ kamishibai.cpp  -I/includes -L/libs/x64 -DUNICODE -ld3d9
+
+The options are:
+-o dxtest.exe – specifies the output file
+-I/dxsdk/include – specifies additional include directories to search
+-L/dxsdk/lib – specifies additional library directories to search
+-DUNICODE – defines the UNICODE preprocessor symbol for unicode strings
+-ld3d9 – link to the d3d9.dll
+
+
+g++ kamishibai.cpp -o -I/includes -L/libs/x64 -DUNICODE -ld3d9 -static-libgcc -mwindows
