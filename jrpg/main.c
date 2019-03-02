@@ -11,10 +11,10 @@
 struct  Game_Mode
 {
   int id;
-  void (*fn_update)(float elapsed_time) ;
-  void (*fn_render)();
-  void (*fn_on_enter)();
-  void (*fn_on_exit)();
+  void (*update)(float elapsed_time) ;
+  void (*render)();
+  void (*on_enter)();
+  void (*on_exit)();
 };
 
 /**************************************************
@@ -144,10 +144,10 @@ struct State_Machine
   struct Game_Mode game_modes[_GAME_MODES_NUMBER_];
   int index_current_game_mode;
 
-  void (*fn_update)(float elapsed_time) ;
-  void (*fn_render)();
-  void (*fn_change)();
-  void (*fn_add)();  
+  void (*update)(float elapsed_time) ;
+  void (*render)();
+  void (*change)();
+  void (*add)();  
 };//State_Machine
 
 void state_machine_update(float elapsed_time)
@@ -158,7 +158,7 @@ void state_machine_update(float elapsed_time)
 void state_machine_render( const struct Game_Mode *game_mode )
 {
   puts("state machine render");
-  game_mode->fn_render();	  
+  game_mode->render();	  
 }//state_machine_render
 
 void state_machine_change()
@@ -178,38 +178,38 @@ int main(int argc, char** argv)
   /* Game Modes initialization */
   struct  Game_Mode menu_game_mode;
   menu_game_mode.id = _INDEX_MAIN_MENU_;
-  menu_game_mode.fn_update = main_menu_update;
-  menu_game_mode.fn_render = main_menu_render;
-  menu_game_mode.fn_on_enter = main_menu_enter;
-  menu_game_mode.fn_on_exit = main_menu_exit;
+  menu_game_mode.update = main_menu_update;
+  menu_game_mode.render = main_menu_render;
+  menu_game_mode.on_enter = main_menu_enter;
+  menu_game_mode.on_exit = main_menu_exit;
 
   struct  Game_Mode local_map_game_mode;
   local_map_game_mode.id = _INDEX_LOCAL_MAP_;
-  local_map_game_mode.fn_update = local_map_update;
-  local_map_game_mode.fn_render =  local_map_render;
-  local_map_game_mode.fn_on_enter =   local_map_enter;
-  local_map_game_mode.fn_on_exit =  local_map_exit;
+  local_map_game_mode.update = local_map_update;
+  local_map_game_mode.render =  local_map_render;
+  local_map_game_mode.on_enter =   local_map_enter;
+  local_map_game_mode.on_exit =  local_map_exit;
   
   struct  Game_Mode world_map_game_mode;
   world_map_game_mode.id = _INDEX_WORLD_MAP_;
-  world_map_game_mode.fn_update =  world_map_update;
-  world_map_game_mode.fn_render =  world_map_render;
-  world_map_game_mode.fn_on_enter =  world_map_enter;
-  world_map_game_mode.fn_on_exit =  world_map_exit;
+  world_map_game_mode.update =  world_map_update;
+  world_map_game_mode.render =  world_map_render;
+  world_map_game_mode.on_enter =  world_map_enter;
+  world_map_game_mode.on_exit =  world_map_exit;
 
   struct  Game_Mode battle_game_mode;
   battle_game_mode.id = _INDEX_BATTLE_;
-  battle_game_mode.fn_update = world_map_update;
-  battle_game_mode.fn_render = world_map_render;
-  battle_game_mode.fn_on_enter = world_map_enter;
-  battle_game_mode.fn_on_exit = world_map_exit;
+  battle_game_mode.update = world_map_update;
+  battle_game_mode.render = world_map_render;
+  battle_game_mode.on_enter = world_map_enter;
+  battle_game_mode.on_exit = world_map_exit;
 
   struct Game_Mode in_game_menu_game_mode;
   in_game_menu_game_mode.id = _INDEX_IN_GAME_MENU_;
-  in_game_menu_game_mode.fn_update = in_game_menu_update;
-  in_game_menu_game_mode.fn_render = in_game_menu_render;
-  in_game_menu_game_mode.fn_on_enter = in_game_menu_enter;
-  in_game_menu_game_mode.fn_on_exit = in_game_menu_exit;
+  in_game_menu_game_mode.update = in_game_menu_update;
+  in_game_menu_game_mode.render = in_game_menu_render;
+  in_game_menu_game_mode.on_enter = in_game_menu_enter;
+  in_game_menu_game_mode.on_exit = in_game_menu_exit;
   /* Eo Game Mode initialization */
 
   /* Statem Machine initialization*/
@@ -221,16 +221,16 @@ int main(int argc, char** argv)
  state_machine.game_modes[_INDEX_IN_GAME_MENU_] = in_game_menu_game_mode;
  state_machine.index_current_game_mode = _INDEX_MAIN_MENU_;  //menu_game_mode
 
- state_machine.fn_update = state_machine_update;
- state_machine.fn_render = state_machine_render;
- state_machine.fn_change = state_machine_change;
- state_machine.fn_add = state_machine_add;
+ state_machine.update = state_machine_update;
+ state_machine.render = state_machine_render;
+ state_machine.change = state_machine_change;
+ state_machine.add = state_machine_add;
 
- state_machine.fn_render( &state_machine.game_modes[state_machine.index_current_game_mode] );
+ state_machine.render( &state_machine.game_modes[state_machine.index_current_game_mode] );
 
  // Command
   state_machine.index_current_game_mode = _INDEX_WORLD_MAP_;  //menu_game_mode
-  state_machine.fn_render( &state_machine.game_modes[state_machine.index_current_game_mode] );
+  state_machine.render( &state_machine.game_modes[state_machine.index_current_game_mode] );
 
   return 0;
 }//main
